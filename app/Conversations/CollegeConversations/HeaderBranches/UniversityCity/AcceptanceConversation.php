@@ -5,9 +5,9 @@ namespace App\Conversations\CollegeConversations\HeaderBranches\UniversityCity;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use App\Conversations\CollegeConversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;
 
-class AcceptanceConversation extends CollegeConversation
+class AcceptanceConversation extends Conversation
 {
    
     

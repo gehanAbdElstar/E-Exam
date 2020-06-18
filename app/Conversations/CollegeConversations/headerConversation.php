@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Conversations;
+namespace App\Conversations\CollegeConversations;
+use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
@@ -8,7 +9,7 @@ use  App\Conversations\CollegeConversations\HeaderBranches\Study\StudyConversati
 use  App\Conversations\CollegeConversations\HeaderBranches\CollegeOverviewConversation;
 use  App\Conversations\CollegeConversations\HeaderBranches\PunishmentsAndPaymentsConversation;
 use App\Conversations\CollegeConversations\HeaderBranches\UniversityCity\UniversityCityConversation;
-class HeaderConversation extends CollegeConversation
+class HeaderConversation extends Conversation
 {
    
       public function __childconstruct()

@@ -11,7 +11,7 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Conversations\Conversation;
-use App\Conversations\HeaderConversation;
+use App\Conversations\CollegeConversations\HeaderConversation;
 $botman = resolve('botman');
 
 
@@ -63,5 +63,5 @@ $botman->hears('file', function ($bot) {
 
 $botman->hears('Start conversation', BotManController::class.'@startConversation');
 $botman->hears('ابدأ', function($bot) {
-    $bot->startConversation(new HeaderConversation);
+    $bot->startConversation(new HeaderConversation(''));
 });

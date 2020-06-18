@@ -6,9 +6,9 @@ namespace  App\Conversations\CollegeConversations\HeaderBranches;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use App\Conversations\CollegeConversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;
 
-class CollegeOverviewConversation extends CollegeConversation
+class CollegeOverviewConversation extends Conversation
 {
    
 
@@ -39,18 +39,22 @@ class CollegeOverviewConversation extends CollegeConversation
 
 
             ]);
-            
 
-    foreach ($this->choices as $key => $value) {
-        # code...
-
-    }
+    
 
 
 
 
         $this->ask($question, function (Answer $answer) {
             if ($answer->isInteractiveMessageReply()) {
+              /*  foreach ($this->choices as $key => $value) {
+                    # code...
+                    
+                }*/
+
+
+
+
                 if ($answer->getValue() === 'overview') {
                     $overview = $this->getInfoObject(
                         $this->choices['overview'],

@@ -6,10 +6,10 @@ namespace  App\Conversations\CollegeConversations\HeaderBranches\Study;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use App\Conversations\CollegeConversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;
 
 
-class StudyConversation extends CollegeConversation
+class StudyConversation extends Conversation
 {
   
    public function __childconstruct()
