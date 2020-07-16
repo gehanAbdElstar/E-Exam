@@ -15612,7 +15612,9 @@ exports.createTokenClass = createTokenClass;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(21);
-module.exports = __webpack_require__(67);
+__webpack_require__(67);
+__webpack_require__(73);
+module.exports = __webpack_require__(68);
 
 
 /***/ }),
@@ -15649,10 +15651,54 @@ Vue.component('botman-tinker', TinkerComponent);
 const app = new Vue({
     el: '#app'
 });*/
+
 Vue.component('tinker', __webpack_require__(58));
 var app = new Vue({
   el: '#app'
 });
+/*
+var x=document.getElementById('app').offsetHeight;
+
+var footer =document.getElementsById('footer');
+if(footer.style.marginTop<50)
+footer.style.marginBottom=-x;*/
+/*
+$(document).ready(function() {
+    var divHeight = $('.footerr').css('height'); 
+    $(document.body).css('margin-bottom',divHeight+'px');
+   
+});*/
+//to make footer stick to bottom
+
+window.addEventListener("load", activateStickyFooter);
+
+function activateStickyFooter() {
+  adjustFooterCssTopToSticky();
+  window.addEventListener("resize", adjustFooterCssTopToSticky);
+}
+
+function adjustFooterCssTopToSticky() {
+  var footer = document.querySelector("#footer");
+  var bounding_box = footer.getBoundingClientRect();
+  var footer_height = bounding_box.height;
+  var window_height = window.innerHeight;
+  var above_footer_height = bounding_box.top - getCssTopAttribute(footer);
+  if (above_footer_height + footer_height <= window_height) {
+    var new_footer_top = window_height - (above_footer_height + footer_height);
+    footer.style.top = new_footer_top + "px";
+  } else if (above_footer_height + footer_height > window_height) {
+    footer.style.top = null;
+  }
+}
+
+function getCssTopAttribute(htmlElement) {
+  var top_string = htmlElement.style.top;
+  if (top_string === null || top_string.length === 0) {
+    return 0;
+  }
+  var extracted_top_pixels = top_string.substring(0, top_string.length - 2);
+  return parseFloat(extracted_top_pixels);
+}
 
 /***/ }),
 /* 22 */
@@ -15668,9 +15714,9 @@ window.Popper = __webpack_require__(5).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(6);
+    window.$ = window.jQuery = __webpack_require__(6);
 
-  __webpack_require__(25);
+    __webpack_require__(25);
 } catch (e) {}
 
 /**
@@ -15692,9 +15738,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -15713,6 +15759,45 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+/*
+$(document).ready(function () {
+    //Scroll div you the bottom onpage load
+    $("#divTest").scrollTop($("#divTest")[0].scrollHeight);
+});
+
+$(window).bind("load", function() { 
+       
+    var footerHeight = 0,
+        footerTop = 0,
+        $footer = $("#footer");
+        
+    positionFooter();
+    
+    function positionFooter() {
+    
+             footerHeight = $footer.height();
+             footerTop = ($(window).scrollTop()+$(window).height()-footerHeight)+"px";
+    
+            if ( ($(document.body).height()+footerHeight) < $(window).height()) {
+                $footer.css({
+                     position: "absolute"
+                }).animate({
+                     top: footerTop
+                })
+            } else {
+                $footer.css({
+                     position: "static"
+                })
+            }
+            
+    }
+
+    $(window)
+            .scroll(positionFooter)
+            .resize(positionFooter)
+            
+});
+*/
 
 /***/ }),
 /* 23 */
@@ -51696,7 +51781,7 @@ exports = module.exports = __webpack_require__(61)(false);
 
 
 // module
-exports.push([module.i, "\ninput.ChatAttachment {\n    width: 0.1px;\n    height: 0.1px;\n    opacity: 0;\n    overflow:hidden;\n    position: absolute;\n    z-index: -1;\n}\n.ChatAttachment+label {\n    cursor: pointer;\n    height: 25px;\n    display: inline-block;\n    border-radius: 5px;\n    background-color: white;\n    border: none;\n    padding: 10px;\n}\ninput.ChatInput {\n    width: 300px;\n    height: 25px;\n    border-radius: 5px;\n    border: none;\n    padding: 10px;\n}\n.btn {\n    display: block;\n    padding: 5px;\n    border-radius: 5px;\n    margin: 5px;\n    min-width: 100px;\n    background-color: lightgrey;\n}\nul.ChatLog {\n    list-style: none;\n}\n.ChatLog {\n   /* max-width: 20em;*/\n    margin: 0 auto;\n}\n.ChatLog .ChatLog__entry {\n    margin: .5em;\n}\n.ChatLog__entry {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-align: end;\n        -ms-flex-align: end;\n            align-items: flex-end;\n    max-width: 100%;\n}\n.ChatLog__entry.ChatLog__entry_mine {\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: reverse;\n        -ms-flex-direction: row-reverse;\n            flex-direction: row-reverse;\n}\n.ChatLog__avatar {\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    z-index: 1;\n    height: 50px;\n    width: 50px;\n    border-radius: 25px;\n}\n.ChatLog__entry.ChatLog__entry_mine\n.ChatLog__avatar {\n    display: none;\n}\n.ChatLog__entry .ChatLog__message {\n    position: relative;\n    margin: 0 12px;\n/*new*/\n    white-space: pre-line;\n}\n.ChatLog__entry .ChatLog__message__image {\n    max-width: 100%;\n}\n.ChatLog__entry .ChatLog__message::before {\n    position: absolute;\n    right: auto;\n    bottom: .6em;\n    left: -12px;\n    height: 0;\n    content: '';\n    border: 6px solid transparent;\n    border-right-color: #ddd;\n    z-index: 2;\n}\n.ChatLog__entry.ChatLog__entry_mine .ChatLog__message::before {\n    right: -12px;\n    bottom: .6em;\n    left: auto;\n    border: 6px solid transparent;\n    border-left-color: #08f;\n}\n.ChatLog__message {\n    background-color: #ddd;\n    padding: .5em;\n    border-radius: 4px;\n    font-weight: lighter;\n   /* max-width: 70%;*/\n  /* max-width: 70.5%;*/\n}\n.ChatLog__entry.ChatLog__entry_mine .ChatLog__message {\n    border-top: 1px solid #07f;\n    border-bottom: 1px solid #07f;\n    background-color: #08f;\n    color: #fff;\n}\n", ""]);
+exports.push([module.i, "\ninput.ChatAttachment {\n    width: 0.1px;\n    height: 0.1px;\n    opacity: 0;\n    overflow:hidden;\n    position: absolute;\n    z-index: -1;\n}\n.ChatAttachment+label {\n    cursor: pointer;\n    height: 25px;\n    display: inline-block;\n    border-radius: 5px;\n    background-color: white;\n    border: none;\n    padding: 10px;\nbackground: #6c757d;\n}\ninput.ChatInput {\n    width: 300px;\n    height: 25px;\n    border-radius: 5px;\n    border: none;\n    padding: 10px;\n}\n.btn {\n    display: block;\n    padding: 5px;\n    border-radius: 5px;\n    margin: 5px;\n    min-width: 100px;\n    background-color: lightgrey;\n    cursor: pointer;\n}\nul.ChatLog {\n    list-style: none;\n}\n.ChatLog {\n   /* max-width: 20em;*/\n    margin: 0 auto;\n}\n.ChatLog .ChatLog__entry {\n    margin: .5em;\n}\n.ChatLog__entry {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    -webkit-box-align: end;\n        -ms-flex-align: end;\n            align-items: flex-end;\n    max-width: 100%;\n}\n.ChatLog__entry.ChatLog__entry_mine {\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: reverse;\n        -ms-flex-direction: row-reverse;\n            flex-direction: row-reverse;\n}\n.ChatLog__avatar {\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    z-index: 1;\n    height: 50px;\n    width: 50px;\n    border-radius: 25px;\n}\n.ChatLog__entry.ChatLog__entry_mine\n.ChatLog__avatar {\n    display: none;\n}\n.ChatLog__entry .ChatLog__message {\n    position: relative;\n    margin: 0 12px;\n/*new*/\n    white-space: pre-line;\n}\n.ChatLog__entry .ChatLog__message__image {\n    max-width: 100%;\n}\n.ChatLog__entry .ChatLog__message::before {\n    position: absolute;\n    right: auto;\n    bottom: .6em;\n    left: -12px;\n    height: 0;\n    content: '';\n    border: 6px solid transparent;\n    border-right-color: #ddd;\n    z-index: 2;\n}\n.ChatLog__entry.ChatLog__entry_mine .ChatLog__message::before {\n    right: -12px;\n    bottom: .6em;\n    left: auto;\n    border: 6px solid transparent;\n    border-left-color: #08f;\n}\n.ChatLog__message {\n    background-color: #ddd;\n    padding: .5em;\n    border-radius: 4px;\n    font-weight: lighter;\n   /* max-width: 70%;*/\n  /* max-width: 70.5%;*/\n}\n.ChatLog__entry.ChatLog__entry_mine .ChatLog__message {\n    border-top: 1px solid #07f;\n    border-bottom: 1px solid #07f;\n    background-color: #08f;\n    color: #fff;\n}\n", ""]);
 
 // exports
 
@@ -52331,6 +52416,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 var axios = __webpack_require__(7);
 
@@ -52342,6 +52430,7 @@ var axios = __webpack_require__(7);
         userId: {
             default: +new Date()
         }
+        /* messagesDB*/
     },
 
     data: function data() {
@@ -52417,8 +52506,13 @@ var axios = __webpack_require__(7);
         },
         performAction: function performAction(value, message) {
             this.callAPI(value, true, null, function (response) {
-                message.actions = null;
+                message.actions;
             });
+            /* old methode values
+             performAction(value, message) {
+            this.callAPI(value, true, null, (response) => {
+               message.actions =null;
+            });*/
         },
         _addMessage: function _addMessage(text, attachment, isMine) {
             var original = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
@@ -52470,7 +52564,7 @@ var render = function() {
           [
             _c("img", {
               staticClass: "ChatLog__avatar",
-              attrs: { src: "/logo.png" }
+              attrs: { src: "/pics/siteLogo.png" }
             }),
             _vm._v(" "),
             _c(
@@ -52607,30 +52701,10 @@ var render = function() {
       attrs: { type: "file", id: "attachment", value: "Attachment" }
     }),
     _vm._v(" "),
-    _c("label", { attrs: { for: "attachment" } }, [
-      _c("span", { attrs: { dir: "rtl", lang: "ar" } }, [_vm._v("إضافة مرفق")]),
-      _vm._v(" "),
-      _c(
-        "svg",
-        {
-          attrs: {
-            xmlns: "http://www.w3.org/2000/svg",
-            width: "20",
-            height: "17",
-            viewBox: "0 0 20 17",
-            dir: "rtl"
-          }
-        },
-        [
-          _c("path", {
-            attrs: {
-              d:
-                "M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"
-            }
-          })
-        ]
-      )
-    ]),
+    _c("label", {
+      staticClass: "ChatAttachment",
+      attrs: { for: "attachment" }
+    }),
     _vm._v(" "),
     _c("input", {
       directives: [
@@ -52676,6 +52750,22 @@ if (false) {
 
 /***/ }),
 /* 67 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

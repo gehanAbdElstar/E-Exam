@@ -1,17 +1,19 @@
 <?php
 
-namespace  App\Conversations\CollegeConversations\HeaderBranches\Study;
+namespace  App\Conversations\HeaderBranches\Study;
 
 
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Conversations\Conversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;
+
 class DegreesConversation extends Conversation
 {
 
-   public function __childconstruct()
-   {
+   public function __construct($headerText){
+       $this->HeaderText=$headerText;
+   
       
        $this->choices=array(
         'deg'=>'نتيجة الطلاب',
@@ -37,25 +39,25 @@ class DegreesConversation extends Conversation
             if ($answer->isInteractiveMessageReply()) {
                 if ($answer->getValue() === 'deg') {
                   
-                   $studentDeg =$this->getInfoObject($this->choices['deg']);
+                   $studentDeg =Shared::getInfoObject($this->choices['deg']);
 
                    $this->say($studentDeg->contents);
                    if ($studentDeg->media1_path != null)
-                       $this->say($this->getAttachement($studentDeg->media1_path, 1));
+                       $this->say(Shared::getAttachement($studentDeg->media1_path, 1));
                    if ($studentDeg->media2_path != null)
-                       $this->say($this->getAttachement($studentDeg->media2_path, 2));
+                       $this->say(Shared::getAttachement($studentDeg->media2_path, 2));
                   
                 } 
                 else if ($answer->getValue() === 'overview') {
-                     $overview = $this->getInfoObject(
+                     $overview = Shared::getInfoObject(
                         $this->choices['overview']
                     );
 
                     $this->say($overview->contents);
                     if ($overview->media1_path != null)
-                        $this->say($this->getAttachement($overview->media1_path, 1));
+                        $this->say(Shared::getAttachement($overview->media1_path, 1));
                     if ($overview->media2_path != null)
-                        $this->say($this->getAttachement($overview->media2_path, 2));
+                        $this->say(Shared::getAttachement($overview->media2_path, 2));
                 }
               
             }

@@ -11990,3 +11990,42 @@ a.text-dark:focus {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.padd {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.mar {
+  margin-bottom: 0px;
+}
+
+.footer {
+  padding: 1rem;
+  position: relative;
+  width: 100%;
+  /* 
+        position: absolute;
+        bottom: 0;
+      
+       /* height: 150px;*/
+}
+
+.logo {
+  float: right;
+  margin-left: 8px;
+}
+
+.logo-text {
+  padding-top: 15px;
+}
+
+.btn {
+  display: block;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  min-width: 100px;
+  background-color: lightgrey;
+  cursor: pointer;
+}
+

@@ -8,7 +8,7 @@ use BotMan\BotMan\Messages\Attachments\Audio;
 use BotMan\BotMan\Messages\Attachments\Video;
 use App\MainTopic;
 use App\CollegeInformation;
-use BotMan\BotMan\Messages\Conversations\Conversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;
 
 abstract class CollegeConversation extends Conversation{
 

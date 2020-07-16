@@ -12,9 +12,9 @@
 */
 
 Route::get('/', function () {
-  //return view('welcome');
+  return view('welcome');
  // $list = App\MainTopic::find(1)->CollegeInformation()->first();
- $choices=array(
+ /*$choices=array(
   'askCourses'=>
                array('tables'=>'الجداول',
                          'credit'=>'الساعات المعتمدة',
@@ -63,4 +63,6 @@ Route::get('/', function () {
 });
 
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
+
+/*Route::get('/botman2','BotManController@handle2');*/
 Route::get('/botman/tinker', 'BotManController@tinker');

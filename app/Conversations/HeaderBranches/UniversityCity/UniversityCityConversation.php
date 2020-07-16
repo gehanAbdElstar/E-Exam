@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Conversations\CollegeConversations\HeaderBranches\UniversityCity;
+namespace App\Conversations\HeaderBranches\UniversityCity;
 
 
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Conversations\Conversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;
 
-//use BotMan\BotMan\Messages\Conversations\Conversation;s\HeaderBranches\UniversityCity\Ac
+//use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;s\HeaderBranches\UniversityCity\Ac
 
 class UniversityCityConversation extends Conversation
 {
 
    
 
-     public function __childconstruct()
-    {
+     public function __construct($headerText){
+         $this->HeaderText=$headerText;
+    
         
        
 
@@ -56,16 +57,16 @@ class UniversityCityConversation extends Conversation
             if ($answer->isInteractiveMessageReply()) {
                 if ($answer->getValue() === 'overview') {
 
-                    $overview = $this->getInfoObject(
+                    $overview = Shared::getInfoObject(
                         $this->choices['overview'],
                         $this->HeaderText
                     );
 
                     $this->say($overview->contents);
                     if ($overview->media1_path != null)
-                        $this->say($this->getAttachement($overview->media1_path, 1));
+                        $this->say(Shared::getAttachement($overview->media1_path, 1));
                     if ($overview->media2_path != null)
-                        $this->say($this->getAttachement($overview->media2_path, 2));
+                        $this->say(Shared::getAttachement($overview->media2_path, 2));
                 } else if ($answer->getValue() === 'acceptance') {
 
                     $this->bot->startConversation(new AcceptanceConversation($this->choices['acceptance']));;
@@ -75,16 +76,16 @@ class UniversityCityConversation extends Conversation
                     $this->bot->startConversation(new LivingSystemConversation($this->choices['living']));
                 } else if ($answer->getValue() === 'punishments') {
 
-                    $punishments = $this->getInfoObject($this->choices['punishments']);
+                    $punishments = Shared::getInfoObject($this->choices['punishments']);
 
                     $this->say($punishments->contents);
                     if ($punishments->media1_path != null)
-                        $this->say($this->getAttachement($punishments->media1_path, 1));
+                        $this->say(Shared::getAttachement($punishments->media1_path, 1));
                     if ($punishments->media2_path != null)
-                        $this->say($this->getAttachement($punishments->media2_path, 2));
+                        $this->say(Shared::getAttachement($punishments->media2_path, 2));
                 } else if ($answer->getValue() === 'register') {
 
-                    $register = $this->getInfoObject(
+                    $register = Shared::getInfoObject(
                         $this->choices['register'],
                         $this->HeaderText
                     );
@@ -93,18 +94,18 @@ class UniversityCityConversation extends Conversation
 
                     $this->say($register->contents);
                     if ($register->media1_path != null)
-                        $this->say($this->getAttachement($register->media1_path, 1));
+                        $this->say(Shared::getAttachement($register->media1_path, 1));
                     if ($register->media2_path != null)
-                        $this->say($this->getAttachement($register->media2_path, 2));
+                        $this->say(Shared::getAttachement($register->media2_path, 2));
                 } else if ($answer->getValue() === 'management') {
 
-                    $management = $this->getInfoObject($this->choices['management']);
+                    $management = Shared::getInfoObject($this->choices['management']);
 
                     $this->say($management->contents);
                     if ($management->media1_path != null)
-                        $this->say($this->getAttachement($management->media1_path, 1));
+                        $this->say(Shared::getAttachement($management->media1_path, 1));
                     if ($management->media2_path != null)
-                        $this->say($this->getAttachement($management->media2_path, 2));
+                        $this->say(Shared::getAttachement($management->media2_path, 2));
                 }
             }
         });

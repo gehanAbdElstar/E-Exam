@@ -1,9 +1,9 @@
 <template>
-    <div >
+    <div>
         <div class="arrow"></div>
         <ul class="ChatLog">
             <li class="ChatLog__entry" v-for="message in messages" :class="{'ChatLog__entry_mine': message.isMine}">
-                <img class="ChatLog__avatar" src="/logo.png" />
+                <img class="ChatLog__avatar" src="/pics/siteLogo.png" />
               
                    
                 <p dir="rtl" lang="AR" class="ChatLog__message"  v-linkified:options="{ tagName: 'a' }" >
@@ -34,8 +34,9 @@
         </ul>
 
         <input type="file" class="ChatAttachment" id="attachment" value="Attachment" >
-         <label for="attachment">
-           <span dir="rtl" lang="ar">إضافة مرفق</span>  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17" dir="rtl"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg>
+         <label for="attachment" class="ChatAttachment" >
+               <!--<span dir="rtl" lang="ar">إضافة مرفق</span>  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17" dir="rtl"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg>
+           -->
         </label>
 <!-- @keyup.enter="sendMessage"-->
         <input type="text" class="ChatInput"  @keyup.enter="sendMessage"  v-model="newMessage" placeholder="" dir="rtl" lang="ar">
@@ -66,6 +67,7 @@
         background-color: white;
         border: none;
         padding: 10px;
+    background: #6c757d;
     }
     input.ChatInput {
         width: 300px;
@@ -82,6 +84,7 @@
         margin: 5px;
         min-width: 100px;
         background-color: lightgrey;
+        cursor: pointer;
     }
 
     ul.ChatLog {
@@ -181,6 +184,7 @@
             userId: {
                 default: +(new Date()),
             },
+           /* messagesDB*/
         },
 
         data() {
@@ -219,6 +223,7 @@
                 }
 
             }, false);
+
         },
 
         methods: {
@@ -248,8 +253,13 @@
 
             performAction(value, message) {
                 this.callAPI(value, true, null, (response) => {
-                    message.actions = null;
+                    message.actions ;
                 });
+                 /* old methode values
+                  performAction(value, message) {
+                this.callAPI(value, true, null, (response) => {
+                    message.actions =null;
+                });*/
             },
 
             _addMessage(text, attachment, isMine, original = {}) {

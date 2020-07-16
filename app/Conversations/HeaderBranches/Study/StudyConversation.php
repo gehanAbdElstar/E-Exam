@@ -1,19 +1,19 @@
 <?php
 
-namespace  App\Conversations\CollegeConversations\HeaderBranches\Study;
+namespace  App\Conversations\HeaderBranches\Study;
 
 
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Conversations\Conversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;
 
 
 class StudyConversation extends Conversation
 {
   
-   public function __childconstruct()
-   {
+   public function __construct($headerText)
+   { $this->HeaderText=$headerText;
     
       
        $this->choices=array('deg'=>'درجات الطلاب',
@@ -56,7 +56,7 @@ class StudyConversation extends Conversation
                 else if ($answer->getValue() === 'depts') {
                     
                     
-                    $depts = $this->getInfoObject(
+                    $depts = Shared::getInfoObject(
                         $this->choices['depts']
                     );
 
@@ -64,9 +64,9 @@ class StudyConversation extends Conversation
 
                     $this->say($depts->contents);
                     if ($depts->media1_path != null)
-                        $this->say($this->getAttachement($depts->media1_path, 1));
+                        $this->say(Shared::getAttachement($depts->media1_path, 1));
                     if ($depts->media2_path != null)
-                        $this->say($this->getAttachement($depts->media2_path, 2));
+                        $this->say(Shared::getAttachement($depts->media2_path, 2));
                 
                 
                 }

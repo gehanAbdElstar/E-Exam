@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Conversations\CollegeConversations;
+namespace App\Conversations;
 use BotMan\BotMan\Messages\Conversations\Conversation;
+use App\Conversations\Utilities\Shared;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use  App\Conversations\CollegeConversations\HeaderBranches\Study\StudyConversation;
-use  App\Conversations\CollegeConversations\HeaderBranches\CollegeOverviewConversation;
-use  App\Conversations\CollegeConversations\HeaderBranches\PunishmentsAndPaymentsConversation;
-use App\Conversations\CollegeConversations\HeaderBranches\UniversityCity\UniversityCityConversation;
+use  App\Conversations\HeaderBranches\Study\StudyConversation;
+use  App\Conversations\HeaderBranches\CollegeOverviewConversation;
+use  App\Conversations\HeaderBranches\PunishmentsAndPaymentsConversation;
+use App\Conversations\HeaderBranches\UniversityCity\UniversityCityConversation;
 class HeaderConversation extends Conversation
 {
-   
-      public function __childconstruct()
-      {
+    
+      public function __construct($headerText){
+          $this->HeaderText=$headerText;
+     
+        
           $this->choices=array(
               'الدراسة',
               'نظرة عامة عن الكلية',

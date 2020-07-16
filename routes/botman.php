@@ -10,8 +10,8 @@ use BotMan\Drivers\Facebook\Extensions\GenericTemplate;
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Conversations\Conversation;
-use App\Conversations\CollegeConversations\HeaderConversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;
+use App\Conversations\HeaderConversation;
 $botman = resolve('botman');
 
 
@@ -62,6 +62,15 @@ $botman->hears('file', function ($bot) {
 
 
 $botman->hears('Start conversation', BotManController::class.'@startConversation');
-$botman->hears('ابدأ', function($bot) {
+$botman->fallback(function($bot) {
     $bot->startConversation(new HeaderConversation(''));
+});
+
+
+$botman->hears('خريطة',function($bot)
+{
+   $image=Image::url('/pics/map.png');
+   $message = OutgoingMessage::create('')
+                ->withAttachment($image);
+   $bot->reply($message);
 });

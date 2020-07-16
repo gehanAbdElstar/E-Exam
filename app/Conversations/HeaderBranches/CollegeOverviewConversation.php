@@ -1,19 +1,20 @@
 <?php
 
-namespace  App\Conversations\CollegeConversations\HeaderBranches;
+namespace  App\Conversations\HeaderBranches;
 
 
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Conversations\Conversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;
 
 class CollegeOverviewConversation extends Conversation
 {
    
 
-     public function __childconstruct()
-    {
+     public function __construct($headerText){
+         $this->HeaderText=$headerText;
+    
         $this->choices = array(
             'askCollege' => array(
                 'overview' => 'نظرة عامة',
@@ -56,26 +57,26 @@ class CollegeOverviewConversation extends Conversation
 
 
                 if ($answer->getValue() === 'overview') {
-                    $overview = $this->getInfoObject(
-                        $this->choices['overview'],
+                    $overview = Shared::getInfoObject(
+                        $this->choices['askCollege']['overview'],
                         $this->HeaderText
                     );
                     if($overview->media1_path!=null)
-                    $this->say($this->getAttachement($overview->media1_path,1));
+                    $this->say(Shared::getAttachement($overview->media1_path,1));
                     if($overview->media2_path!=null)
-                    $this->say($this->getAttachement($overview->media2_path,2));
+                    $this->say(Shared::getAttachement($overview->media2_path,2));
                     $this->say($overview->contents);
                  }
                 else if ($answer->getValue() === 'socialMedia') {
                   
-                    $socialMedia =$this->getInfoObject($this->choices['socialMedia']);
+                    $socialMedia =Shared::getInfoObject($this->choices['askCollege']['socialMedia']);
 
                     
                 $this->say($socialMedia->contents);
                 if($socialMedia->media1_path!=null)
-                    $this->say($this->getAttachement($socialMedia->media1_path,1));
+                    $this->say(Shared::getAttachement($socialMedia->media1_path,1));
                     if($socialMedia->media2_path!=null)
-                    $this->say($this->getAttachement($socialMedia->media2_path,2));
+                    $this->say(Shared::getAttachement($socialMedia->media2_path,2));
                 } 
                 else if ($answer->getValue() === 'collegeParts') {
                   //name means user ask about parts
@@ -104,36 +105,36 @@ class CollegeOverviewConversation extends Conversation
         $this->ask($question, function (Answer $answer) {
             if ($answer->isInteractiveMessageReply()) {
                 if ($answer->getValue() === 'affairsPart') {
-                    $affairsPart =$this->getInfoObject($this->choices['affairsPart']);
+                    $affairsPart =Shared::getInfoObject($this->choices['askParts']['affairsPart']);
 
                     $this->say($affairsPart->contents);
                     if($affairsPart->media1_path!=null)
-                    $this->say($this->getAttachement($affairsPart->media1_path,1));
+                    $this->say(Shared::getAttachement($affairsPart->media1_path,1));
                     if($affairsPart->media2_path!=null)
-                    $this->say($this->getAttachement($affairsPart->media2_path,2));
+                    $this->say(Shared::getAttachement($affairsPart->media2_path,2));
                  }
                 else if ($answer->getValue() === 'carePart') {
                   
-                    $carePart =$this->getInfoObject($this->choices['carePart']);
+                    $carePart =Shared::getInfoObject($this->choices['askParts']['carePart']);
 
                     $this->say($carePart->contents);
                     if($carePart->media1_path!=null)
-                    $this->say($this->getAttachement($carePart->media1_path,1));
+                    $this->say(Shared::getAttachement($carePart->media1_path,1));
                     if($carePart->media2_path!=null)
-                    $this->say($this->getAttachement($carePart->media2_path,2));
+                    $this->say(Shared::getAttachement($carePart->media2_path,2));
                     
                
                 } 
                 else if ($answer->getValue() === 'healthPart') {
                   //name means user ask about parts
                   //the bot is the asked one  
-                  $healthPart =$this->getInfoObject($this->choices['healthPart']);
+                  $healthPart =Shared::getInfoObject($this->choices['askParts']['healthPart']);
 
                   $this->say($healthPart->contents);
                   if($healthPart->media1_path!=null)
-                  $this->say($this->getAttachement($healthPart->media1_path,1));
+                  $this->say(Shared::getAttachement($healthPart->media1_path,1));
                   if($healthPart->media2_path!=null)
-                  $this->say($this->getAttachement($healthPart->media2_path,2));
+                  $this->say(Shared::getAttachement($healthPart->media2_path,2));
                   
 
                 }

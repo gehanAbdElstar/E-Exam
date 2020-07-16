@@ -1,0 +1,66 @@
+body {
+  font-family: "Varela Round", sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: radial-gradient(#57bfc7, #45a6b3);
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  /* height: 100vh;*/
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  flex-wrap: wrap;
+}
+
+.content {
+  text-align: center;
+}
+
+.logo {
+  margin-right: 40px;
+  margin-bottom: 20px;
+}
+
+.links a {
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: white;
+  margin: 10px;
+}
+
+/*to make footer sticky to bottom*/
+
+.footer {
+  position: relative;
+  padding: 1rem;
+  width: 100%;
+}
+
+.links {
+  margin-bottom: 20px;
+}
+
+@media all and (max-width: 500px) {
+  .links {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+

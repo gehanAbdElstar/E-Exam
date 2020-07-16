@@ -1,17 +1,18 @@
 <?php
 
-namespace  App\Conversations\CollegeConversations\HeaderBranches\Study;
+namespace  App\Conversations\HeaderBranches\Study;
 
 use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
-use BotMan\BotMan\Messages\Conversations\Conversation;
+use BotMan\BotMan\Messages\Conversations\Conversation;use App\Conversations\Utilities\Shared;
 class CoursesConversation extends Conversation
 {
     
 
-     public function __childconstruct()
-    {
+     public function __construct($headerText){
+         $this->HeaderText=$headerText;
+    
         $this->choices = array(
             'askCourses' =>
             array(
@@ -59,25 +60,25 @@ class CoursesConversation extends Conversation
                     $this->askCredit($headerText);
                 } else if ($answer->getValue() === 'courses') {
                     //variables
-                    $coursesInfo =  $this->getInfoObject($this->choices['askCourses']['courses']);
+                    $coursesInfo =  Shared::getInfoObject($this->choices['askCourses']['courses']);
 
 
 
                     $this->say($coursesInfo->contents);
                     if($coursesInfo->media1_path!=null)
-                    $this->say($this->getAttachement($coursesInfo->media1_path,1));
+                    $this->say(Shared::getAttachement($coursesInfo->media1_path,1));
                     if($coursesInfo->media2_path!=null)
-                    $this->say($this->getAttachement($coursesInfo->media2_path,2));
+                    $this->say(Shared::getAttachement($coursesInfo->media2_path,2));
                 } else if ($answer->getValue() === 'pastExams') {
-                    $pastExams=  $this->getInfoObject($this->choices['askCourses']['pastExams']);
+                    $pastExams=  Shared::getInfoObject($this->choices['askCourses']['pastExams']);
 
 
 
                     $this->say($pastExams->contents);
                     if($pastExams->media1_path!=null)
-                    $this->say($this->getAttachement($pastExams->media1_path,1));
+                    $this->say(Shared::getAttachement($pastExams->media1_path,1));
                     if($pastExams->media2_path!=null)
-                    $this->say($this->getAttachement($pastExams->media2_path,2));
+                    $this->say(Shared::getAttachement($pastExams->media2_path,2));
                 }
             }
         });
@@ -98,21 +99,21 @@ class CoursesConversation extends Conversation
             if ($answer->isInteractiveMessageReply()) {
                 if ($answer->getValue() === 'lecTables') {
 
-                    $lecTables = $this->getInfoObject($this->choices['askTables']['lecTables']);
+                    $lecTables = Shared::getInfoObject($this->choices['askTables']['lecTables']);
 
                     $this->say($lecTables->contents);
                     if($lecTables->media1_path!=null)
-                    $this->say($this->getAttachement($lecTables->media1_path,1));
+                    $this->say(Shared::getAttachement($lecTables->media1_path,1));
                     if($lecTables->media2_path!=null)
-                    $this->say($this->getAttachement($lecTables->media2_path,2));
+                    $this->say(Shared::getAttachement($lecTables->media2_path,2));
                 } else if ($answer->getValue() === 'examTables') {
-                    $examTables = $this->getInfoObject($this->choices['askTables']['examTables']);
+                    $examTables = Shared::getInfoObject($this->choices['askTables']['examTables']);
 
                     $this->say($examTables->contents);
                     if($examTables->media1_path!=null)
-                    $this->say($this->getAttachement($examTables->media1_path,1));
+                    $this->say(Shared::getAttachement($examTables->media1_path,1));
                     if($examTables->media2_path!=null)
-                    $this->say($this->getAttachement($examTables->media2_path,2));
+                    $this->say(Shared::getAttachement($examTables->media2_path,2));
                 }
             }
         });
@@ -132,19 +133,19 @@ class CoursesConversation extends Conversation
             if ($answer->isInteractiveMessageReply()) {
                 if ($answer->getValue() === 'overview') {
 
-                    $overview = $this->getInfoObject(
+                    $overview = Shared::getInfoObject(
                         $this->choices['askCredit']['overview'],
-                        $this->HeaderText
+                        $this->choices['askCourses']['credit']
                     );
 
                     $this->say($overview->contents);
                     if($overview->media1_path!=null)
-                    $this->say($this->getAttachement($overview->media1_path,1));
+                    $this->say(Shared::getAttachement($overview->media1_path,1));
                     if($overview->media2_path!=null)
-                    $this->say($this->getAttachement($overview->media2_path,2));
+                    $this->say(Shared::getAttachement($overview->media2_path,2));
                 } else if ($answer->getValue() === 'register') {
 
-                    $register =$this->getInfoObject(
+                    $register =Shared::getInfoObject(
                         $this->choices['askCredit']['register'],
                         $this->choices['askCourses']['credit']
                     );
@@ -153,9 +154,9 @@ class CoursesConversation extends Conversation
 
                     $this->say($register->contents);
                     if($register->media1_path!=null)
-                    $this->say($this->getAttachement($register->media1_path,1));
+                    $this->say(Shared::getAttachement($register->media1_path,1));
                     if($register->media2_path!=null)
-                    $this->say($this->getAttachement($register->media2_path,2));
+                    $this->say(Shared::getAttachement($register->media2_path,2));
 
                     /*  if($coursesInfo->media1_path=== null)
                  {

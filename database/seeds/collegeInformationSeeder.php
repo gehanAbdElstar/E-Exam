@@ -722,7 +722,7 @@ class collegeInformationSeeder extends Seeder
                                                           );
                                                           DB::table('college_information')->insert(
                                                             [
-                                                              'main_topic_id'=>'7',
+                                                              'main_topic_id'=>'6',
                                                               'topic'=>'إدارات المدينة',
                                                               'contents'=>
                                                         '- إدارة الشئون المالية والإدارية
@@ -736,7 +736,7 @@ class collegeInformationSeeder extends Seeder
                                                             );
                                                             DB::table('college_information')->insert(
                                                               [
-                                                                'main_topic_id'=>'7',
+                                                                'main_topic_id'=>'6',
                                                                 'topic'=>'التسجيل',
                                                                 'contents'=>
                                                                  'وتتمثل المستندات المطلوبة:

@@ -11,13 +11,22 @@ class BotManController extends Controller
     /**
      * Place your BotMan logic here.
      */
-    public function handle()
+    public function handle(/*Request $request*/)
     {
         $botman = app('botman');
 
         $botman->listen();
+       // return response()->json([$request->all()]);
+      
     }
-
+   /* public function handle2(Request $request)
+        {
+            $botman = app('botman');
+            $storage = $botman->userStorage()->all();
+            dd($storage);
+           
+        }*/
+    
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
