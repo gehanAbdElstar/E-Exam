@@ -60,9 +60,17 @@ Route::get('/', function () {
   }*/
 
 
-});
+})->name('home');
 
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 
 /*Route::get('/botman2','BotManController@handle2');*/
-Route::get('/botman/tinker', 'BotManController@tinker');
+//Route::get('/botman/tinker', 'BotManController@tinker');
+Route::get('/kfci.bot/chat', 'BotManController@tinker')->name('chat');
+Route::view('/kfci.bot/signin','signin')->name('signin');
+//college information controller
+Route::resource('info', 'InfoController')->except([
+  'create', 'store', 'destroy'
+]);
+Route::view('/kfci.bot/privacy','privacy')->name('privacy');
+Route::view('/kfci.bot/about','about')->name('about');
