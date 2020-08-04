@@ -13,64 +13,25 @@
 
 Route::get('/', function () {
   return view('welcome');
- // $list = App\MainTopic::find(1)->CollegeInformation()->first();
- /*$choices=array(
-  'askCourses'=>
-               array('tables'=>'الجداول',
-                         'credit'=>'الساعات المعتمدة',
-                         'courses'=>'المواد',
-                         'pastExams'=>'إمتحانات سابقة'
-                         ),
-   'askTables'=>
-                array(
-                    'lecTables'=>'الجداول الدراسية',
-                      'examTables'=>'جداول الإمتحانات'
-                ),
-  'askCredit'=>
-               array(
-                  'overview'=>'نظرة عامة',
-                   'register'=>'التسجيل'
-               
-               )
-                  );
- $mainTopics=App\MainTopic::all();
-  echo $mainTopics->
-  where('name',$choices['askCourses']['credit'])
-  ->first()->collegeInformation->
-   where('topic',$choices['askCredit']['register'])
-   ->first()->contents;
-
-
-
-/*
-  echo $list->id.' '.$list->topic.'<br>';
-  echo App\CollegeInformation::
-  where('topic','=','أقسام الكلية')
-  ->first()
-  ->contents;
-  */
-/*$main=new App\MainTopic();
-//$main->find(1)->CollegeInformation();
-  $data=$main->all(array('id','name'));
-  $data2=$data->find(1)->CollegeInformation();
- // $data->find(12)->delete();
-  //$main::create(array('name'=>'منى'));
-  foreach($data2 as $list){
-      echo $list->id.' '.$list->topic.'<br>';
-  }*/
-
-
 })->name('home');
 
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
-
-/*Route::get('/botman2','BotManController@handle2');*/
-//Route::get('/botman/tinker', 'BotManController@tinker');
 Route::get('/kfci.bot/chat', 'BotManController@tinker')->name('chat');
-Route::view('/kfci.bot/signin','signin')->name('signin');
+//Route::view('/kfci.bot/signin','login')->name('login');
+
+Route::get('/signup', 'SignController@index')->name('signup');
+Route::get('/signup/{id}', 'SignController@fetch')->name('sign.fetch');
+Route::post('/signup', 'SignController@store');
+
+Route::get('/signup', 'SignController@showLoginForm')->name('login');
+Route::post('/signup', 'SignController@login');
+//Route::get('/student/{id}', 'SignController@fetch')->name('sign.fetch');
+
+
 //college information controller
 Route::resource('info', 'InfoController')->except([
   'create', 'store', 'destroy'
 ]);
 Route::view('/kfci.bot/privacy','privacy')->name('privacy');
 Route::view('/kfci.bot/about','about')->name('about');
+Route::view('/kfci.bot/edit','infoCRUD.edit')->name('edit');
