@@ -2,13 +2,13 @@
 
 namespace Illuminate\Database\Eloquent;
 
-use Illuminate\Contracts\Queue\QueueableCollection;
-use Illuminate\Contracts\Queue\QueueableEntity;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection as BaseCollection;
-use Illuminate\Support\Str;
 use LogicException;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Queue\QueueableEntity;
+use Illuminate\Contracts\Queue\QueueableCollection;
+use Illuminate\Support\Collection as BaseCollection;
 
 class Collection extends BaseCollection implements QueueableCollection
 {
@@ -17,7 +17,7 @@ class Collection extends BaseCollection implements QueueableCollection
      *
      * @param  mixed  $key
      * @param  mixed  $default
-     * @return \Illuminate\Database\Eloquent\Model|static|null
+     * @return \Illuminate\Database\Eloquent\Model|static
      */
     public function find($key, $default = null)
     {
@@ -190,6 +190,19 @@ class Collection extends BaseCollection implements QueueableCollection
     }
 
     /**
+     * Add an item to the collection.
+     *
+     * @param  mixed  $item
+     * @return $this
+     */
+    public function add($item)
+    {
+        $this->items[] = $item;
+
+        return $this;
+    }
+
+    /**
      * Determine if a key exists in the collection.
      *
      * @param  mixed  $key
@@ -315,10 +328,6 @@ class Collection extends BaseCollection implements QueueableCollection
     {
         $intersect = new static;
 
-        if (empty($items)) {
-            return $intersect;
-        }
-
         $dictionary = $this->getDictionary($items);
 
         foreach ($this->items as $item) {
@@ -384,7 +393,7 @@ class Collection extends BaseCollection implements QueueableCollection
      */
     public function makeHidden($attributes)
     {
-        return $this->each->makeHidden($attributes);
+        return $this->each->addHidden($attributes);
     }
 
     /**
@@ -489,25 +498,12 @@ class Collection extends BaseCollection implements QueueableCollection
      * Pad collection to the specified length with a value.
      *
      * @param  int  $size
-     * @param  mixed  $value
+     * @param  mixed $value
      * @return \Illuminate\Support\Collection
      */
     public function pad($size, $value)
     {
         return $this->toBase()->pad($size, $value);
-    }
-
-    /**
-     * Get the comparison function to detect duplicates.
-     *
-     * @param  bool  $strict
-     * @return \Closure
-     */
-    protected function duplicateComparator($strict)
-    {
-        return function ($a, $b) {
-            return $a->is($b);
-        };
     }
 
     /**

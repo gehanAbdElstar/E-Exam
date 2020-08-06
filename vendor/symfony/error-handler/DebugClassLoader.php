@@ -401,12 +401,13 @@ class DebugClassLoader
         if (
             'Symfony\Bridge\PhpUnit\Legacy\SymfonyTestsListenerForV7' === $class
             || 'Symfony\Bridge\PhpUnit\Legacy\SymfonyTestsListenerForV6' === $class
+            || 'Test\Symfony\Component\Debug\Tests' === $refl->getNamespaceName()
         ) {
             return [];
         }
         $deprecations = [];
 
-        $className = isset($class[15]) && "\0" === $class[15] && 0 === strpos($class, "class@anonymous\x00") ? get_parent_class($class).'@anonymous' : $class;
+        $className = false !== strpos($class, "@anonymous\0") ? (get_parent_class($class) ?: key(class_implements($class)) ?: 'class').'@anonymous' : $class;
 
         // Don't trigger deprecations for classes in the same vendor
         if ($class !== $className) {
@@ -756,7 +757,7 @@ class DebugClassLoader
         }
 
         if (isset($dirFiles[$file])) {
-            return $real.$dirFiles[$file];
+            return $real .= $dirFiles[$file];
         }
 
         $kFile = strtolower($file);
@@ -775,7 +776,7 @@ class DebugClassLoader
             self::$darwinCache[$kDir][1] = $dirFiles;
         }
 
-        return $real.$dirFiles[$kFile];
+        return $real .= $dirFiles[$kFile];
     }
 
     /**

@@ -11,7 +11,6 @@
 
 namespace NunoMaduro\Collision\Contracts\Adapters\Phpunit;
 
-use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 
 /**
@@ -29,5 +28,5 @@ interface Listener extends TestListener
      *
      * @return void
      */
-    public function render(Test $test, \Throwable $t);
+    public function render(\Throwable $t);
 }

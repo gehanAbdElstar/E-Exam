@@ -1,0 +1,42 @@
+.table-bordered{
+margin: 10px;
+//width:400px ;
+  white-space: pre-line;
+  display: inline-block;
+
+ height:600px;
+  overflow:auto;
+}
+
+iframe{
+ /* display: table-cell;*/
+  overflow:scroll;
+}
+.contents{
+  max-height:200px;
+  max-width:200px;
+  overflow:auto;
+}
+/*
+table th {
+    position: -webkit-sticky; // this is for all Safari (Desktop & iOS), not for Chrome
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #fff;
+}*/
+table th {
+    position:sticky;
+    top:0;
+    z-index:1;
+    border-top:0;
+    background: #ededed;
+}
+   
+
+.table-bordered td{
+ border: 3px solid grey;
+}
+.table-bordered th{
+ border: 3px solid grey;
+}

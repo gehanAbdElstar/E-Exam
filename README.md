@@ -1,2 +1,8 @@
-# E-Exam
-E-Exam is a System for students to get their exams online. 
+<p align="center"><img height="188" width="198" ></p>
+<h1 align="center">KFCIBot</h1>
+
+## About KFCIBot
+php 7.1
+
+
+#

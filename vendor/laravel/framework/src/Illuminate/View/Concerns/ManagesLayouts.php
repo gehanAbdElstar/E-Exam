@@ -2,8 +2,8 @@
 
 namespace Illuminate\View\Concerns;
 
-use Illuminate\Contracts\View\View;
 use InvalidArgumentException;
+use Illuminate\Contracts\View\View;
 
 trait ManagesLayouts
 {
@@ -189,7 +189,7 @@ trait ManagesLayouts
      * Get the contents of a section.
      *
      * @param  string  $name
-     * @param  string|null  $default
+     * @param  string  $default
      * @return mixed
      */
     public function getSection($name, $default = null)

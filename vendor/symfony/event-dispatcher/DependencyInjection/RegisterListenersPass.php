@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\Event as LegacyEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -55,12 +56,12 @@ class RegisterListenersPass implements CompilerPassInterface
             return;
         }
 
+        $aliases = [];
+
         if ($container->hasParameter($this->eventAliasesParameter)) {
             $aliases = $container->getParameter($this->eventAliasesParameter);
-            $container->getParameterBag()->remove($this->eventAliasesParameter);
-        } else {
-            $aliases = [];
         }
+
         $definition = $container->findDefinition($this->dispatcherService);
 
         foreach ($container->findTaggedServiceIds($this->listenerTag, true) as $id => $events) {
@@ -140,6 +141,7 @@ class RegisterListenersPass implements CompilerPassInterface
             || !($type = $m->getParameters()[0]->getType())
             || $type->isBuiltin()
             || Event::class === ($name = $type->getName())
+            || LegacyEvent::class === $name
         ) {
             throw new InvalidArgumentException(sprintf('Service "%s" must define the "event" attribute on "%s" tags.', $id, $this->listenerTag));
         }
@@ -158,7 +160,7 @@ class ExtractingEventDispatcher extends EventDispatcher implements EventSubscrib
     public static $aliases = [];
     public static $subscriber;
 
-    public function addListener(string $eventName, $listener, int $priority = 0)
+    public function addListener($eventName, $listener, $priority = 0)
     {
         $this->listeners[] = [$eventName, $listener[1], $priority];
     }

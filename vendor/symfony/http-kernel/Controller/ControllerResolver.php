@@ -64,7 +64,7 @@ class ControllerResolver implements ControllerResolverInterface
             }
 
             if (!\is_callable($controller)) {
-                throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable. %s', $request->getPathInfo(), $this->getControllerError($controller)));
+                throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: ', $request->getPathInfo()).$this->getControllerError($controller));
             }
 
             return $controller;
@@ -72,7 +72,7 @@ class ControllerResolver implements ControllerResolverInterface
 
         if (\is_object($controller)) {
             if (!\is_callable($controller)) {
-                throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable. %s', $request->getPathInfo(), $this->getControllerError($controller)));
+                throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: '.$this->getControllerError($controller), $request->getPathInfo()));
             }
 
             return $controller;
@@ -85,11 +85,11 @@ class ControllerResolver implements ControllerResolverInterface
         try {
             $callable = $this->createController($controller);
         } catch (\InvalidArgumentException $e) {
-            throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable. %s', $request->getPathInfo(), $e->getMessage()), 0, $e);
+            throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: ', $request->getPathInfo()).$e->getMessage(), 0, $e);
         }
 
         if (!\is_callable($callable)) {
-            throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable. %s', $request->getPathInfo(), $this->getControllerError($callable)));
+            throw new \InvalidArgumentException(sprintf('The controller for URI "%s" is not callable: '.$this->getControllerError($callable), $request->getPathInfo()));
         }
 
         return $callable;
@@ -98,11 +98,13 @@ class ControllerResolver implements ControllerResolverInterface
     /**
      * Returns a callable for the given controller.
      *
+     * @param string $controller A Controller string
+     *
      * @return callable A PHP callable
      *
      * @throws \InvalidArgumentException When the controller cannot be created
      */
-    protected function createController(string $controller)
+    protected function createController($controller)
     {
         if (false === strpos($controller, '::')) {
             $controller = $this->instantiateController($controller);
@@ -140,9 +142,11 @@ class ControllerResolver implements ControllerResolverInterface
     /**
      * Returns an instantiated controller.
      *
+     * @param string $class A class name
+     *
      * @return object
      */
-    protected function instantiateController(string $class)
+    protected function instantiateController($class)
     {
         return new $class();
     }

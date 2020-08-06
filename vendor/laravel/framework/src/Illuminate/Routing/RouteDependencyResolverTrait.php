@@ -2,10 +2,10 @@
 
 namespace Illuminate\Routing;
 
-use Illuminate\Support\Arr;
-use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
+use Illuminate\Support\Arr;
+use ReflectionFunctionAbstract;
 
 trait RouteDependencyResolverTrait
 {
@@ -41,12 +41,12 @@ trait RouteDependencyResolverTrait
 
         $values = array_values($parameters);
 
-        $skippableValue = new \stdClass;
-
         foreach ($reflector->getParameters() as $key => $parameter) {
-            $instance = $this->transformDependency($parameter, $parameters, $skippableValue);
+            $instance = $this->transformDependency(
+                $parameter, $parameters
+            );
 
-            if ($instance !== $skippableValue) {
+            if (! is_null($instance)) {
                 $instanceCount++;
 
                 $this->spliceIntoParameters($parameters, $key, $instance);
@@ -64,10 +64,9 @@ trait RouteDependencyResolverTrait
      *
      * @param  \ReflectionParameter  $parameter
      * @param  array  $parameters
-     * @param  object  $skippableValue
      * @return mixed
      */
-    protected function transformDependency(ReflectionParameter $parameter, $parameters, $skippableValue)
+    protected function transformDependency(ReflectionParameter $parameter, $parameters)
     {
         $class = $parameter->getClass();
 
@@ -76,11 +75,9 @@ trait RouteDependencyResolverTrait
         // binding and we do not want to mess with those; otherwise, we resolve it here.
         if ($class && ! $this->alreadyInParameters($class->name, $parameters)) {
             return $parameter->isDefaultValueAvailable()
-                        ? null
-                        : $this->container->make($class->name);
+                ? $parameter->getDefaultValue()
+                : $this->container->make($class->name);
         }
-
-        return $skippableValue;
     }
 
     /**

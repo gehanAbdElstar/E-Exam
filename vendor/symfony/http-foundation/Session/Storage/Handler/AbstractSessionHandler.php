@@ -42,19 +42,26 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     }
 
     /**
+     * @param string $sessionId
+     *
      * @return string
      */
-    abstract protected function doRead(string $sessionId);
+    abstract protected function doRead($sessionId);
 
     /**
+     * @param string $sessionId
+     * @param string $data
+     *
      * @return bool
      */
-    abstract protected function doWrite(string $sessionId, string $data);
+    abstract protected function doWrite($sessionId, $data);
 
     /**
+     * @param string $sessionId
+     *
      * @return bool
      */
-    abstract protected function doDestroy(string $sessionId);
+    abstract protected function doDestroy($sessionId);
 
     /**
      * @return bool
@@ -63,6 +70,15 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     {
         $this->prefetchData = $this->read($sessionId);
         $this->prefetchId = $sessionId;
+
+        if (\PHP_VERSION_ID < 70317 || (70400 <= \PHP_VERSION_ID && \PHP_VERSION_ID < 70405)) {
+            // work around https://bugs.php.net/79413
+            foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
+                if (!isset($frame['class']) && isset($frame['function']) && \in_array($frame['function'], ['session_regenerate_id', 'session_create_id'], true)) {
+                    return '' === $this->prefetchData;
+                }
+            }
+        }
 
         return '' !== $this->prefetchData;
     }

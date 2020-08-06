@@ -20,18 +20,31 @@ Route::get('/kfci.bot/chat', 'BotManController@tinker')->name('chat');
 //Route::view('/kfci.bot/signin','login')->name('login');
 
 Route::get('/signup', 'SignController@index')->name('signup');
-Route::get('/signup/{id}', 'SignController@fetch')->name('sign.fetch');
-Route::post('/signup', 'SignController@store');
 
-Route::get('/signup', 'SignController@showLoginForm')->name('login');
-Route::post('/signup', 'SignController@login');
+Route::get('/signup/{id}', 'SignController@fetch')->name('sign.fetch');
+Route::post('/signup/students', 'SignController@signupStudent')->name('signup.students');
+
+Route::post('/signup/professors', 'SignController@signupProf')->name('signup.professors');
+
+
+Route::get('/login', 'SignController@showLoginForm')->name('login');
+Route::post('/login/students', 'SignController@loginStudent')->name('login.student');
+Route::post('/login/professors', 'SignController@loginProf')->name('login.professors');
+
+Route::post('/login/admins', 'SignController@loginAdmin')->name('login.admin');
+
+
+Route::get('/logout', 'SignController@logout')->name('logout');
+
 //Route::get('/student/{id}', 'SignController@fetch')->name('sign.fetch');
 
 
+//Auth::routes();
+
 //college information controller
-Route::resource('info', 'InfoController')->except([
+/*Route::resource('info', 'InfoController')->except([
   'create', 'store', 'destroy'
-]);
+]);*/
 Route::view('/kfci.bot/privacy','privacy')->name('privacy');
 Route::view('/kfci.bot/about','about')->name('about');
 Route::view('/kfci.bot/edit','infoCRUD.edit')->name('edit');

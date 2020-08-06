@@ -2,19 +2,19 @@
 
 namespace Illuminate\Mail;
 
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
-use Illuminate\Contracts\Mail\Factory as MailFactory;
-use Illuminate\Contracts\Mail\Mailable as MailableContract;
-use Illuminate\Contracts\Queue\Factory as Queue;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Str;
-use Illuminate\Support\Traits\ForwardsCalls;
-use Illuminate\Support\Traits\Localizable;
 use ReflectionClass;
 use ReflectionProperty;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
+use Illuminate\Container\Container;
+use Illuminate\Support\Traits\Localizable;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Contracts\Queue\Factory as Queue;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
+use Illuminate\Contracts\Mail\Mailable as MailableContract;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 
 class Mailable implements MailableContract, Renderable
 {
@@ -133,13 +133,6 @@ class Mailable implements MailableContract, Renderable
     public $callbacks = [];
 
     /**
-     * The name of the mailer that should send the message.
-     *
-     * @var string
-     */
-    public $mailer;
-
-    /**
      * The callback that should be invoked while building the view data.
      *
      * @var callable
@@ -149,19 +142,15 @@ class Mailable implements MailableContract, Renderable
     /**
      * Send the message using the given mailer.
      *
-     * @param  \Illuminate\Contracts\Mail\Factory|\Illuminate\Contracts\Mail\Mailer  $mailer
+     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function send($mailer)
+    public function send(MailerContract $mailer)
     {
-        return $this->withLocale($this->locale, function () use ($mailer) {
+        $this->withLocale($this->locale, function () use ($mailer) {
             Container::getInstance()->call([$this, 'build']);
 
-            $mailer = $mailer instanceof MailFactory
-                            ? $mailer->mailer($this->mailer)
-                            : $mailer;
-
-            return $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
+            $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
                 $this->buildFrom($message)
                      ->buildRecipients($message)
                      ->buildSubject($message)
@@ -188,7 +177,7 @@ class Mailable implements MailableContract, Renderable
         $queueName = property_exists($this, 'queue') ? $this->queue : null;
 
         return $queue->connection($connection)->pushOn(
-            $queueName ?: null, $this->newQueuedJob()
+            $queueName ?: null, new SendQueuedMailable($this)
         );
     }
 
@@ -206,24 +195,14 @@ class Mailable implements MailableContract, Renderable
         $queueName = property_exists($this, 'queue') ? $this->queue : null;
 
         return $queue->connection($connection)->laterOn(
-            $queueName ?: null, $delay, $this->newQueuedJob()
+            $queueName ?: null, $delay, new SendQueuedMailable($this)
         );
-    }
-
-    /**
-     * Make the queued mailable job instance.
-     *
-     * @return mixed
-     */
-    protected function newQueuedJob()
-    {
-        return new SendQueuedMailable($this);
     }
 
     /**
      * Render the mailable into a view.
      *
-     * @return string
+     * @return \Illuminate\View\View
      *
      * @throws \ReflectionException
      */
@@ -745,7 +724,7 @@ class Mailable implements MailableContract, Renderable
      * Set the view data for the message.
      *
      * @param  string|array  $key
-     * @param  mixed  $value
+     * @param  mixed   $value
      * @return $this
      */
     public function with($key, $value = null)
@@ -768,10 +747,7 @@ class Mailable implements MailableContract, Renderable
      */
     public function attach($file, array $options = [])
     {
-        $this->attachments = collect($this->attachments)
-                    ->push(compact('file', 'options'))
-                    ->unique('file')
-                    ->all();
+        $this->attachments[] = compact('file', 'options');
 
         return $this;
     }
@@ -780,7 +756,7 @@ class Mailable implements MailableContract, Renderable
      * Attach a file to the message from storage.
      *
      * @param  string  $path
-     * @param  string|null  $name
+     * @param  string  $name
      * @param  array  $options
      * @return $this
      */
@@ -794,20 +770,18 @@ class Mailable implements MailableContract, Renderable
      *
      * @param  string  $disk
      * @param  string  $path
-     * @param  string|null  $name
+     * @param  string  $name
      * @param  array  $options
      * @return $this
      */
     public function attachFromStorageDisk($disk, $path, $name = null, array $options = [])
     {
-        $this->diskAttachments = collect($this->diskAttachments)->push([
+        $this->diskAttachments[] = [
             'disk' => $disk,
             'path' => $path,
             'name' => $name ?? basename($path),
             'options' => $options,
-        ])->unique(function ($file) {
-            return $file['disk'].$file['path'];
-        })->all();
+        ];
 
         return $this;
     }
@@ -822,23 +796,7 @@ class Mailable implements MailableContract, Renderable
      */
     public function attachData($data, $name, array $options = [])
     {
-        $this->rawAttachments = collect($this->rawAttachments)
-                ->push(compact('data', 'name', 'options'))
-                ->unique('data')
-                ->all();
-
-        return $this;
-    }
-
-    /**
-     * Set the name of the mailer that should send the message.
-     *
-     * @param  string  $mailer
-     * @return $this
-     */
-    public function mailer($mailer)
-    {
-        $this->mailer = $mailer;
+        $this->rawAttachments[] = compact('data', 'name', 'options');
 
         return $this;
     }
@@ -868,29 +826,10 @@ class Mailable implements MailableContract, Renderable
     }
 
     /**
-     * Apply the callback's message changes if the given "value" is true.
-     *
-     * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  mixed  $default
-     * @return mixed|$this
-     */
-    public function when($value, $callback, $default = null)
-    {
-        if ($value) {
-            return $callback($this, $value) ?: $this;
-        } elseif ($default) {
-            return $default($this, $value) ?: $this;
-        }
-
-        return $this;
-    }
-
-    /**
      * Dynamically bind parameters to the message.
      *
      * @param  string  $method
-     * @param  array  $parameters
+     * @param  array   $parameters
      * @return $this
      *
      * @throws \BadMethodCallException

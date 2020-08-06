@@ -2,9 +2,9 @@
 
 namespace Illuminate\Routing;
 
-use Illuminate\Support\Str;
-use ReflectionFunction;
 use ReflectionMethod;
+use ReflectionFunction;
+use Illuminate\Support\Str;
 
 class RouteSignatureParameters
 {
@@ -12,7 +12,7 @@ class RouteSignatureParameters
      * Extract the route action's signature parameters.
      *
      * @param  array  $action
-     * @param  string|null  $subClass
+     * @param  string  $subClass
      * @return array
      */
     public static function fromAction(array $action, $subClass = null)

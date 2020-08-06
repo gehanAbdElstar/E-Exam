@@ -114,7 +114,6 @@ abstract class AbstractCloner implements ClonerInterface
         'SplDoublyLinkedList' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castDoublyLinkedList'],
         'SplFileInfo' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castFileInfo'],
         'SplFileObject' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castFileObject'],
-        'SplFixedArray' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castFixedArray'],
         'SplHeap' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castHeap'],
         'SplObjectStorage' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castObjectStorage'],
         'SplPriorityQueue' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castHeap'],
@@ -203,27 +202,33 @@ abstract class AbstractCloner implements ClonerInterface
 
     /**
      * Sets the maximum number of items to clone past the minimum depth in nested structures.
+     *
+     * @param int $maxItems
      */
-    public function setMaxItems(int $maxItems)
+    public function setMaxItems($maxItems)
     {
-        $this->maxItems = $maxItems;
+        $this->maxItems = (int) $maxItems;
     }
 
     /**
      * Sets the maximum cloned length for strings.
+     *
+     * @param int $maxString
      */
-    public function setMaxString(int $maxString)
+    public function setMaxString($maxString)
     {
-        $this->maxString = $maxString;
+        $this->maxString = (int) $maxString;
     }
 
     /**
      * Sets the minimum tree depth where we are guaranteed to clone all the items.  After this
      * depth is reached, only setMaxItems items will be cloned.
+     *
+     * @param int $minDepth
      */
-    public function setMinDepth(int $minDepth)
+    public function setMinDepth($minDepth)
     {
-        $this->minDepth = $minDepth;
+        $this->minDepth = (int) $minDepth;
     }
 
     /**
@@ -234,7 +239,7 @@ abstract class AbstractCloner implements ClonerInterface
      *
      * @return Data The cloned variable represented by a Data object
      */
-    public function cloneVar($var, int $filter = 0)
+    public function cloneVar($var, $filter = 0)
     {
         $this->prevErrorHandler = set_error_handler(function ($type, $msg, $file, $line, $context = []) {
             if (E_RECOVERABLE_ERROR === $type || E_USER_ERROR === $type) {
@@ -280,13 +285,13 @@ abstract class AbstractCloner implements ClonerInterface
      *
      * @return array The object casted as array
      */
-    protected function castObject(Stub $stub, bool $isNested)
+    protected function castObject(Stub $stub, $isNested)
     {
         $obj = $stub->value;
         $class = $stub->class;
 
-        if (isset($class[15]) && "\0" === $class[15] && 0 === strpos($class, "class@anonymous\x00")) {
-            $stub->class = get_parent_class($class).'@anonymous';
+        if (\PHP_VERSION_ID < 80000 ? "\0" === ($class[15] ?? null) : false !== strpos($class, "@anonymous\0")) {
+            $stub->class = get_debug_type($obj);
         }
         if (isset($this->classInfo[$class])) {
             list($i, $parents, $hasDebugInfo, $fileInfo) = $this->classInfo[$class];
@@ -315,7 +320,7 @@ abstract class AbstractCloner implements ClonerInterface
         }
 
         $stub->attr += $fileInfo;
-        $a = Caster::castObject($obj, $class, $hasDebugInfo);
+        $a = Caster::castObject($obj, $class, $hasDebugInfo, $stub->class);
 
         try {
             while ($i--) {
@@ -339,7 +344,7 @@ abstract class AbstractCloner implements ClonerInterface
      *
      * @return array The resource casted as array
      */
-    protected function castResource(Stub $stub, bool $isNested)
+    protected function castResource(Stub $stub, $isNested)
     {
         $a = [];
         $res = $stub->value;
