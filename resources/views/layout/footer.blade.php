@@ -1,6 +1,6 @@
 
-<nav class="bg-dark mar footer footerr" id="footer" >
-
+<nav class="bg-dark mar footer footerr" id="footer"  >
+{{--
   <ul class="nav justify-content-center">
     <li class="nav-item padd">
      <h3> <a class="nav-link" href="{{route('about')}}" >about us</a></h3>
@@ -37,6 +37,16 @@
    <h3>   <a class="nav-link" href="{{route('privacy')}}">privacy policy</a></h3>
     </li>
   </ul> 
-  
-   
+  --}}
+  <div class="container">
+    <span class="text-muted"> © E-Exam.</span>
+  </div>
 </nav>
+
+{{--
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <span class="text-muted">Place sticky footer content here.</span>
+  </div>
+</footer>
+--}}

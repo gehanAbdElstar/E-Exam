@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-  return view('welcome');
-})->name('home');
+Route::get('/','SignController@home')->name('home');
+Route::get('/students/home','StudentController@home')->name('student.home');
+Route::get('/profs/home','ProfController@home')->name('prof.home');
+Route::get('/admins/home','AdminController@home')->name('admin.home');
 
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 Route::get('/kfci.bot/chat', 'BotManController@tinker')->name('chat');
@@ -32,6 +33,14 @@ Route::post('/login/students', 'SignController@loginStudent')->name('login.stude
 Route::post('/login/professors', 'SignController@loginProf')->name('login.professors');
 
 Route::post('/login/admins', 'SignController@loginAdmin')->name('login.admin');
+
+
+
+Route::get('/students/exam/{id}', 'StudentController@exam')->name('students.exam');
+
+
+
+
 
 
 Route::get('/logout', 'SignController@logout')->name('logout');

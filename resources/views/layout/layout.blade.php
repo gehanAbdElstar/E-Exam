@@ -15,15 +15,15 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">
        <link rel="stylesheet"  href="/css/app.css" type="text/css">
-    
+      
 @yield('head')
   
 </head>
 <body>
     @include('layout.header')
-    
+    <div class="container">
 @yield('content')
-    
+    </div>
 
     @include('layout.footer')
 <script src="/js/app.js"></script>

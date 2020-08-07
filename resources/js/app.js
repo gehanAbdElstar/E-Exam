@@ -41,6 +41,7 @@ $(document).ready(function() {
     $(document.body).css('margin-bottom',divHeight+'px');
    
 });*/
+
 //to make footer stick to bottom
 
 window.addEventListener("load", activateStickyFooter);
@@ -72,6 +73,45 @@ function getCssTopAttribute(htmlElement) {
   const extracted_top_pixels = top_string.substring(0, top_string.length - 2);
   return parseFloat(extracted_top_pixels);
 }
+
+
+//to make footer stick to bottom jquiry
+/*
+// Window load event used just in case window height is dependant upon images
+$(window).bind("load", function() { 
+       
+  var footerHeight = 0,
+      footerTop = 0,
+      $footer = $("#footer");
+      
+  positionFooter();
+  
+  function positionFooter() {
+  
+           footerHeight = $footer.height();
+           footerTop = ($(window).scrollTop()+$(window).height()-footerHeight)+"px";
+  
+          if ( ($(document.body).height()+footerHeight) < $(window).height()) {
+              $footer.css({
+                   position: "absolute"
+              }).animate({
+                   top: footerTop
+              })
+          } else {
+              $footer.css({
+                   position: "static"
+              })
+          }
+          
+  }
+
+  $(window)
+          .scroll(positionFooter)
+          .resize(positionFooter)
+          
+});
+
+*/
 
 
 //get drop down value

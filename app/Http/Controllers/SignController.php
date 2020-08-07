@@ -44,6 +44,29 @@ class SignController extends Controller
    
     }
 
+public function home()
+{
+  if(Session::has('type') )
+  {
+ if(Session::get('type')=='student')
+   {
+     return redirect()->route('student.home');
+   }
+   else if(Session::get('type')=='prof'){
+    return redirect()->route('prof.home');
+   }
+   else if(Session::get('type')=='admin'){
+    return redirect()->route('admin.home');
+   }
+  }
+  else{
+    return view('welcome');
+  }
+}
+
+
+
+
 
     public function signupStudent(Request $request)
     {
@@ -185,9 +208,10 @@ if($student && $password)
 
   
  $request->session()->put('user', $student);
+ $request->session()->put('type', 'student');
  $student=$request->session()->get('user');
 
-return view('students.home',['student'=>$student]);
+return redirect()->route('student.home');;
  //$s= $request->session()->get('user');
   //dd($s->fName);
  // return redirect()->route('');
@@ -232,9 +256,10 @@ if($prof && $password)
 
   
  $request->session()->put('user', $prof);
+ $request->session()->put('type', 'prof');
  $prof=$request->session()->get('user');
 
-return view('profs.home',['prof'=>$prof]);
+ return redirect()->route('prof.home');
  
 }
 else if($prof==null){
@@ -271,9 +296,11 @@ if($admin && $password)
 
   
  $request->session()->put('user', $admin);
+ $request->session()->put('type', 'admin');
  $admin=$request->session()->get('user');
 
-return view('admins.home',['admin'=>$admin]);
+
+return redirect()->route('admin.home');
  
 }
 else if($admin==null){
@@ -296,8 +323,8 @@ else if($password==null){
 
 
  public function logout() {
-   Session::forget('user');
-  
+  // Session::forget('user');
+  Session::flush();
   return redirect()->route('home');
 }
 

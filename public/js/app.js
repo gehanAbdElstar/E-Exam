@@ -15659,7 +15659,7 @@ const app = new Vue({
 
 Vue.component('tinker', __webpack_require__(58));
 var app = new Vue({
-  el: '#app'
+    el: '#app'
 });
 /*
 var x=document.getElementById('app').offsetHeight;
@@ -15673,57 +15673,96 @@ $(document).ready(function() {
     $(document.body).css('margin-bottom',divHeight+'px');
    
 });*/
+
 //to make footer stick to bottom
 
 window.addEventListener("load", activateStickyFooter);
 
 function activateStickyFooter() {
-  adjustFooterCssTopToSticky();
-  window.addEventListener("resize", adjustFooterCssTopToSticky);
+    adjustFooterCssTopToSticky();
+    window.addEventListener("resize", adjustFooterCssTopToSticky);
 }
 
 function adjustFooterCssTopToSticky() {
-  var footer = document.querySelector("#footer");
-  var bounding_box = footer.getBoundingClientRect();
-  var footer_height = bounding_box.height;
-  var window_height = window.innerHeight;
-  var above_footer_height = bounding_box.top - getCssTopAttribute(footer);
-  if (above_footer_height + footer_height <= window_height) {
-    var new_footer_top = window_height - (above_footer_height + footer_height);
-    footer.style.top = new_footer_top + "px";
-  } else if (above_footer_height + footer_height > window_height) {
-    footer.style.top = null;
-  }
+    var footer = document.querySelector("#footer");
+    var bounding_box = footer.getBoundingClientRect();
+    var footer_height = bounding_box.height;
+    var window_height = window.innerHeight;
+    var above_footer_height = bounding_box.top - getCssTopAttribute(footer);
+    if (above_footer_height + footer_height <= window_height) {
+        var new_footer_top = window_height - (above_footer_height + footer_height);
+        footer.style.top = new_footer_top + "px";
+    } else if (above_footer_height + footer_height > window_height) {
+        footer.style.top = null;
+    }
 }
 
 function getCssTopAttribute(htmlElement) {
-  var top_string = htmlElement.style.top;
-  if (top_string === null || top_string.length === 0) {
-    return 0;
-  }
-  var extracted_top_pixels = top_string.substring(0, top_string.length - 2);
-  return parseFloat(extracted_top_pixels);
+    var top_string = htmlElement.style.top;
+    if (top_string === null || top_string.length === 0) {
+        return 0;
+    }
+    var extracted_top_pixels = top_string.substring(0, top_string.length - 2);
+    return parseFloat(extracted_top_pixels);
 }
+
+//to make footer stick to bottom jquiry
+/*
+// Window load event used just in case window height is dependant upon images
+$(window).bind("load", function() { 
+       
+  var footerHeight = 0,
+      footerTop = 0,
+      $footer = $("#footer");
+      
+  positionFooter();
+  
+  function positionFooter() {
+  
+           footerHeight = $footer.height();
+           footerTop = ($(window).scrollTop()+$(window).height()-footerHeight)+"px";
+  
+          if ( ($(document.body).height()+footerHeight) < $(window).height()) {
+              $footer.css({
+                   position: "absolute"
+              }).animate({
+                   top: footerTop
+              })
+          } else {
+              $footer.css({
+                   position: "static"
+              })
+          }
+          
+  }
+
+  $(window)
+          .scroll(positionFooter)
+          .resize(positionFooter)
+          
+});
+
+*/
 
 //get drop down value
 
 $(function () {
-  $('select[name="level"]').on('change', function () {
-    var levelID = $(this).val();
+    $('select[name="level"]').on('change', function () {
+        var levelID = $(this).val();
 
-    if (levelID) {
-      $.get('/signup/' + levelID, function (data) {
-        $('select[name="dep"]').empty();
+        if (levelID) {
+            $.get('/signup/' + levelID, function (data) {
+                $('select[name="dep"]').empty();
 
-        $('select[name="dep"]').append('<option value="">== select dept ==</option>');
-        $.each(data, function (key, value) {
-          $('select[name="dep"]').append('<option value="' + key + '">' + value + '</option>');
-        });
-      }, 'json');
-    } else {
-      $('select[name="dep"]').empty();
-    }
-  });
+                $('select[name="dep"]').append('<option value="">== select dept ==</option>');
+                $.each(data, function (key, value) {
+                    $('select[name="dep"]').append('<option value="' + key + '">' + value + '</option>');
+                });
+            }, 'json');
+        } else {
+            $('select[name="dep"]').empty();
+        }
+    });
 });
 
 /*
