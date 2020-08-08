@@ -11,7 +11,15 @@
           E-Exam
      </h3>
       </a>
-   
+   @if(Session::has('user'))
+   @if(Session::get('type')=='student')
+   <nav class="nav nav-tabs nav-stacked align-bottom">
+   <a class="nav-link" href="{{route('student.home')}}">home</a>
+   <a class="nav-link" href="{{route('students.results')}}">results</a>
+ </nav>
+
+   @endif
+   @endif
 {{--<nav class="nav nav-tabs nav-stacked align-bottom">
         <a class="nav-link active" href="#">Active link</a>
         <a class="nav-link" href="#">Link</a>

@@ -1,3 +1,13 @@
+
+
+
+
+
+
+
+
+
+
 @extends('layout.layout')
 
 @section('head')
@@ -11,10 +21,50 @@
     <strong>welcome {{Session::get('user')->fName}}</strong> 
     
   </div>
-
- <h1 class="text-center m-3 bg-light p-3"> exams </h1>
+  @if(Session::has('status'))
+ <div class="text-center">
+  <button type="button" class="btn btn-primary  inline " data-toggle="modal" data-target="#exampleModal">
+    get your result
+  </button>
   
-  <div class="accordion m-3" id="accordionExample">
+</div>
+@endif
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            @if(stristr(Session::get('status'),'congr'))
+            <div class="alert alert-success" role="alert">
+             {{Session::get('status')}}<br>
+             your degree is {{Session::get('degree')}}
+            </div>
+            @else
+            <div class="alert alert-danger" role="alert">
+              {{Session::get('status')}}
+              <br>
+             your degree is {{Session::get('degree')}}
+            </div>
+            @endif
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+<h1 class="text-center m-3 bg-light p-3"> exams results </h1>
+  
+  <div class="accordion m-3" id="accordionExample" >
     @foreach ($subjects as $subject)
      
     <div class="card">
@@ -34,13 +84,13 @@
               <tr>
                 <th scope="col">id</th>
                 <th scope="col">name</th>
-                <th scope="col">event</th>
+                <th scope="col">degree</th>
                 
               </tr>
             </thead>
             <tbody>
           @foreach ($exams as $exam)
-              @if($subject->id == $exam->subj_id && ! in_array($exam->id,(array)$submited))
+              @if($subject->id == $exam->subj_id)
                   <tr>
                     <th scope="row">{{$exam->id}}</th>
                     <td>{{$exam->name}}</td>
@@ -48,10 +98,9 @@
                       @php
                           $id=$exam->id
                       @endphp
-                      <a href="{{route('students.exam',$id)}}" class="btn bg-primary btn-primary w-25" >
+                      {{$exam->degree}}
                        
-                     start exam
-                      </a>
+                     
                     </td>
                    
                   </tr>

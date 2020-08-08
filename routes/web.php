@@ -38,12 +38,14 @@ Route::post('/login/admins', 'SignController@loginAdmin')->name('login.admin');
 
 Route::get('/students/exam/{id}', 'StudentController@exam')->name('students.exam');
 
+Route::post('/students/exam/{id}', 'StudentController@examCheck');
 
-
+Route::get('/students/results','StudentController@results')->name('students.results');
 
 
 
 Route::get('/logout', 'SignController@logout')->name('logout');
+
 
 //Route::get('/student/{id}', 'SignController@fetch')->name('sign.fetch');
 

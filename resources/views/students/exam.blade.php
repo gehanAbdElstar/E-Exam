@@ -12,28 +12,35 @@
     
   </div>
 
+@php
+  $id=$exam->id;  
+@endphp
 
-
-  <form action="{{route('signup.professors')}}"  class="m-5 edit-form  bg-light bordered rounded p-3 "   method="POST"  >
+  <form action="{{route('students.exam',$id)}}"  class="m-5 edit-form  bg-light bordered rounded p-3 "   method="POST"  >
     @csrf
    
 
 <div class="col text-left">
-<h1> sign up as professor</h1>
+<h1 class="text-center"> 
+    {{$exam->name}}
+</h1>
 @foreach ($questions as $quest)
 
 <fieldset class="form-group">
     <legend>{{$quest->question}}</legend>
+    @php
+       $i=0; 
+    @endphp
     @foreach ($choices as $choice)
     @if($quest->id == $choice->que_id)
 
     <div class="form-check">
         <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="{{$quest->id}}" id="{{$choice->id}}" value="option1" >
+          <input type="radio" class="form-check-input" name="choice{{$quest->id}}" id="{{$choice->id}}" value="{{$choice->choice}}" >
          {{$choice->choice}}
         </label>
       </div>
-
+      
       @endif
       @endforeach
 
