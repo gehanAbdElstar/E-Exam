@@ -19,7 +19,7 @@
             </ul>
         </div>
     @endif
-    <div class="row align-items-center">
+    <div class="row no-gutters  align-items-center">
         <form action="{{route('signup.professors')}}"  class="m-5 edit-form equal-height bg-light bordered rounded p-3 "   method="POST"  >
             @csrf
            
@@ -86,7 +86,7 @@
 
 
     
-</div>{{-- 1 col div--}}
+</div> {{--  1 col div--}}
 </form><br>
   
    <form action="{{route('signup.students')}}"  class="m-5 edit-form equal-height bg-light bordered rounded p-3 " enctype="multipart/form-data"  method="POST"  >
@@ -163,16 +163,13 @@
       
 
    
-</div>{{-- 2 col div--}}
-</form>
+     </div>{{-- 2 col div--}}
+    </form>
 
 
 
 
-    </div>{{-- raw div--}}
+   </div>{{-- raw div--}}
    </div>
-   <script>
-
-   
-   </script>
+   </div>
 @endsection

@@ -38,7 +38,7 @@
     </li>
   </ul> 
   --}}
-  <div class="container">
+  <div class="container-fluid">
     <span class="text-muted"> © E-Exam.</span>
   </div>
 </nav>
